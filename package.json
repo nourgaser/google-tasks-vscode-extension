@@ -26,7 +26,8 @@
     "productivity"
   ],
   "activationEvents": [
-    "onView:googleTasks"
+    "onView:googleTasks",
+    "onFileSystem:gtask-json"
   ],
   "main": "./dist/extension.js",
   "contributes": {

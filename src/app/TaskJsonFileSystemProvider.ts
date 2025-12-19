@@ -47,8 +47,12 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
     try {
       const {taskListId, taskId} = this.parseUri(uri)
       const service = gTaskTreeProvider.service
-      if (!service)
-        throw vscode.FileSystemError.Unavailable('Google Tasks client is not initialized yet')
+      if (!service) {
+        const reason =
+          'Google Tasks is still initializing. Open the Google Tasks view or sign in, then reload this document.'
+        debugChannel.appendLine(`[gtask-json][readFile] uri=${uri.toString()} not-ready: ${reason}`)
+        return this.buildNotReadyResponse(reason)
+      }
 
       const {data} = await service.tasks.get({
         tasklist: taskListId,
@@ -128,7 +132,6 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
       'notes',
       'due',
       'status',
-      'links',
       'hidden',
       'deleted',
       'parent',
@@ -141,6 +144,7 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
     })
 
     if (input.$schema !== undefined) delete input.$schema
+    if (input.links !== undefined) delete input.links
     if (input.title !== undefined) requestBody.title = input.title
     if (input.notes !== undefined) requestBody.notes = input.notes
     if (input.status !== undefined) {
@@ -149,7 +153,6 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
       requestBody.status = input.status
     }
     if (input.due !== undefined) requestBody.due = this.normalizeDue(input.due)
-    if (input.links !== undefined) requestBody.links = input.links
     if (input.hidden !== undefined) requestBody.hidden = Boolean(input.hidden)
     if (input.deleted !== undefined) requestBody.deleted = Boolean(input.deleted)
     if (input.parent !== undefined) requestBody.parent = input.parent
@@ -169,6 +172,15 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
         'due must be RFC3339, e.g., 2025-12-01T15:00:00Z or 2025-12-01'
       )
     return dateLike
+  }
+
+  private buildNotReadyResponse(reason: string): Uint8Array {
+    const placeholder = {
+      $schema: this.schemaUri.toString(),
+      error: reason,
+      note: 'Once Google Tasks is ready, click Try Again or re-open to fetch live data.',
+    }
+    return Buffer.from(JSON.stringify(placeholder, null, 2), 'utf8')
   }
 }
 
