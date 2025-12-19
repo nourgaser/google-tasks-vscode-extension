@@ -24,6 +24,6 @@ Last updated: 2025-12-19
 - [x] Extend task creation/edit flows to capture due date/time (ISO) and other supported fields when provided.
 - [x] Surface key metadata (due/status) in tree item description/tooltip for quick scanning.
 - [x] Add telemetry entries for new commands/actions consistent with existing telemetry wrapper.
-- [ ] Update package metadata for personal fork (name/displayName/publisher/version) and document packaging for local install.
+- [x] Update package metadata for personal fork (name/displayName/publisher/version) and document packaging for local install (publisher: nourgaser; author: Nour Gaser).
 - [ ] Run manual testing checklist (auth, edit, save, invalid JSON errors, due date handling, subtasks, completed/hidden cases).
-- [ ] Update docs as needed (README snippets, usage notes, known limitations) after features land.
+- [x] Update docs as needed (README snippets, usage notes, known limitations) after features land.

@@ -1,8 +1,9 @@
 {
-  "name": "google-tasks",
-  "displayName": "Google Tasks for VSCode (unofficial)",
-  "description": "Access Google Tasks list in the Tree View of VSCode",
-  "publisher": "krishnapravin",
+  "name": "google-tasks-json-fork",
+  "displayName": "Google Tasks JSON Editor (fork by Nour Gaser)",
+  "description": "View and edit Google Tasks, including JSON editing with due dates. Forked from Krishna Pravin's google-tasks extension.",
+  "publisher": "nourgaser",
+  "author": "Nour Gaser",
   "repository": {
     "type": "git",
     "url": "https://github.com/KrishnaPravin/google-tasks-vscode-extension"
@@ -11,7 +12,7 @@
     "url": "https://github.com/KrishnaPravin/google-tasks-vscode-extension/issues"
   },
   "icon": "resources/logo.png",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "aiKey": "c5722733-cc25-4ee0-bf89-febeea8257da",
   "engines": {
     "vscode": "^1.52.0"

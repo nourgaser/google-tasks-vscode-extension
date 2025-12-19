@@ -1,4 +1,4 @@
-# Google Tasks for VSCode (unofficial)
+# Google Tasks JSON Editor (fork by Nour Gaser)
 
 ## Manage your To-Do list ✅ without going out of your VSCode Editor 🤖.
 
@@ -6,11 +6,30 @@
 
 > This is not an official product of Google
 
-This extension is for viewing your list of tasks from the [Google Tasks](https://support.google.com/tasks/answer/7675772) in the tree view of VSCode.
+This fork (by Nour Gaser, based on the original by Krishna Pravin) lets you view your Google Tasks in the tree view and open any task as a JSON document to edit fields like title, notes, status, and due date/time.
 
 ## Requirements
 
 You need to have a Google Account with data in Google Tasks application to utilise this extension.
+
+## Usage
+
+- In the Google Tasks view, click a task (or use the context menu) to open it as JSON.
+- Edit allowed fields: `title`, `notes`, `status` (`needsAction` | `completed`), `due` (RFC3339, e.g. `2025-12-01` or `2025-12-01T15:00:00Z`), `hidden`, `deleted`, `parent`.
+- The `links` field is read-only; the Tasks API ignores link updates.
+- Save to patch the task via the Google Tasks API; the tree refreshes automatically.
+
+## Packaging locally
+
+- `publisher` is set to `nourgaser` for this fork; change it if you publish under a different id.
+- Run `npm install` then `npm run vscode:prepublish`.
+- Package with `npx vsce package` (or `pnpm dlx vsce package`).
+- Install the generated `.vsix` via VS Code: Extensions view → `...` → Install from VSIX.
+
+## Credits
+
+- Original extension by Krishna Pravin: https://github.com/KrishnaPravin/google-tasks-vscode-extension
+- Fork maintained by Nour Gaser.
 
 ## Screenshots
 
