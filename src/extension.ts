@@ -5,12 +5,14 @@ import {registerRootPath} from './RootPath'
 import {extensionQualifiedId} from './Constants'
 import telemetry from './telemetry'
 import {registerCommands} from './app/commands/commands'
+import {registerTaskJsonFileSystemProvider} from './app/TaskJsonFileSystemProvider'
 
 export function activate(context: vscode.ExtensionContext) {
   const startTime = process.hrtime()
   telemetry.sendTelemetryEvent('activate')
 
   registerRootPath(context)
+  registerTaskJsonFileSystemProvider(context)
   registerCommands()
 
   loadGoogleTasks()

@@ -21,6 +21,13 @@ export class GTask extends vscode.TreeItem {
         : vscode.TreeItemCollapsibleState.None
     )
     if (task.parent) this.contextValue += 'SubItem'
+
+    if (task.id)
+      this.command = {
+        command: 'googleTasks.editTaskJson',
+        title: 'Edit Task',
+        arguments: [this],
+      }
   }
 
   // Overrides
@@ -34,11 +41,13 @@ export class GTask extends vscode.TreeItem {
   get description(): string {
     const hasChildren = Boolean(this.children.length)
     const hasNotes = Boolean(this.task.notes)
-    return (
-      (hasChildren ? this.children.length.toString() : '') +
-      (hasChildren && hasNotes ? ' · ' : '') +
-      (hasNotes ? this.task.notes : '')
-    )
+    const parts: string[] = []
+    if (hasChildren) parts.push(this.children.length.toString())
+    const due = this.formatDue(this.task.due)
+    if (due) parts.push(`due ${due}`)
+    if (this.task.status === 'completed') parts.push('completed')
+    if (hasNotes) parts.push(this.task.notes as string)
+    return parts.join(' · ')
   }
   // Overrides
   // @ts-ignore
@@ -48,5 +57,12 @@ export class GTask extends vscode.TreeItem {
       light: path.join(RootPath.path, 'resources', `light-${icon}`),
       dark: path.join(RootPath.path, 'resources', `dark-${icon}`),
     }
+  }
+
+  private formatDue(due?: string | null): string | undefined {
+    if (!due) return undefined
+    const parsed = new Date(due)
+    if (Number.isNaN(parsed.getTime())) return due
+    return parsed.toISOString().slice(0, 10)
   }
 }

@@ -141,6 +141,14 @@
           "dark": "resources/dark-icon-edit.svg",
           "light": "resources/light-icon-edit.svg"
         }
+      },
+      {
+        "command": "googleTasks.editTaskJson",
+        "title": "Edit Task as JSON",
+        "icon": {
+          "dark": "resources/dark-icon-edit.svg",
+          "light": "resources/light-icon-edit.svg"
+        }
       }
     ],
     "menus": {
@@ -218,6 +226,11 @@
           "group": "inline@2"
         },
         {
+          "command": "googleTasks.editTaskJson",
+          "when": "viewItem =~ /GTaskSubItem|GTask$/",
+          "group": "inline@2.5"
+        },
+        {
           "command": "googleTasks.completeTask",
           "when": "viewItem =~ /GTaskSubItem|GTask$/",
           "group": "inline@3"
@@ -234,6 +247,11 @@
         },
         {
           "command": "googleTasks.renameTask",
+          "when": "viewItem =~ /GTaskSubItem|GTask$/",
+          "group": "1_actions"
+        },
+        {
+          "command": "googleTasks.editTaskJson",
           "when": "viewItem =~ /GTaskSubItem|GTask$/",
           "group": "1_actions"
         },
