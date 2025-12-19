@@ -12,9 +12,12 @@ type EditableTaskFields = Pick<
   'title' | 'notes' | 'due' | 'status' | 'links' | 'hidden' | 'deleted' | 'parent'
 >
 
+type EditableTaskDocument = EditableTaskFields & {$schema?: string}
+
 class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
   private _onDidChangeFile = new vscode.EventEmitter<vscode.FileChangeEvent[]>()
   readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> = this._onDidChangeFile.event
+  constructor(private schemaUri: vscode.Uri) {}
 
   watch(): vscode.Disposable {
     return new vscode.Disposable(() => {})
@@ -93,8 +96,9 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
     return {taskListId, taskId}
   }
 
-  private toEditable(task: tasks_v1.Schema$Task): EditableTaskFields {
+  private toEditable(task: tasks_v1.Schema$Task): EditableTaskDocument {
     return {
+      $schema: this.schemaUri.toString(),
       title: task.title,
       notes: task.notes,
       due: task.due,
@@ -119,6 +123,7 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
       throw vscode.FileSystemError.Unavailable('Expected a JSON object with task fields')
 
     const allowedKeys = new Set([
+      '$schema',
       'title',
       'notes',
       'due',
@@ -135,6 +140,7 @@ class TaskJsonFileSystemProvider implements vscode.FileSystemProvider {
         throw vscode.FileSystemError.Unavailable(`Unsupported field: ${key}`)
     })
 
+    if (input.$schema !== undefined) delete input.$schema
     if (input.title !== undefined) requestBody.title = input.title
     if (input.notes !== undefined) requestBody.notes = input.notes
     if (input.status !== undefined) {
@@ -177,7 +183,8 @@ function stringifyError(err: unknown): string {
 }
 
 export function registerTaskJsonFileSystemProvider(context: vscode.ExtensionContext): void {
-  const provider = new TaskJsonFileSystemProvider()
+  const schemaUri = vscode.Uri.joinPath(context.extensionUri, 'schemas', 'gtask-task.schema.json')
+  const provider = new TaskJsonFileSystemProvider(schemaUri)
   context.subscriptions.push(
     vscode.workspace.registerFileSystemProvider(taskJsonScheme, provider, {isCaseSensitive: true})
   )

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Google Task editable fields",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema reference for editor IntelliSense"
+    },
+    "title": {
+      "type": ["string", "null"],
+      "description": "Task title"
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Task notes"
+    },
+    "due": {
+      "type": ["string", "null"],
+      "description": "RFC3339 date or datetime; date-only is treated as all-day",
+      "oneOf": [
+        {"format": "date-time"},
+        {"pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Date only (all-day)"}
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["needsAction", "completed"],
+      "description": "Task status"
+    },
+    "links": {
+      "type": "array",
+      "description": "Optional links attached to the task",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "description": {"type": ["string", "null"], "description": "Link label"},
+          "link": {"type": ["string", "null"], "description": "URL"},
+          "type": {
+            "type": ["string", "null"],
+            "enum": ["email", "link"],
+            "description": "Link type"
+          }
+        }
+      }
+    },
+    "hidden": {
+      "type": ["boolean", "null"],
+      "description": "Hide task from list"
+    },
+    "deleted": {
+      "type": ["boolean", "null"],
+      "description": "Mark task as deleted"
+    },
+    "parent": {
+      "type": ["string", "null"],
+      "description": "Parent task ID for subtasks"
+    }
+  }
+}

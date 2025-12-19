@@ -53,6 +53,17 @@
         "contents": "Google user token not found.\nPlease authorize with Google to continue.\n[Authorize Google](command:googleTasks.initUserGAuth)"
       }
     ],
+    "jsonValidation": [
+      {
+        "fileMatch": [
+          "gtask-json:/*.json",
+          "gtask-json://*.json",
+          "gtask-json:/**/*.json",
+          "gtask-json://**/*.json"
+        ],
+        "url": "./schemas/gtask-task.schema.json"
+      }
+    ],
     "commands": [
       {
         "command": "googleTasks.logout",
